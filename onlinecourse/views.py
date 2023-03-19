@@ -109,21 +109,19 @@ def submit(request, course_id):
 
     submission.objects.create(enrollment=enrollment)
 
-def extract_answers(request):
     submitted_anwsers = []
     for key in request.POST:
         if key.startswith('choice'):
             value = request.POST[key]
             choice_id = int(value)
             submitted_anwsers.append(choice_id)
-    return submitted_anwsers
 
-for choice_id in submitted_answers:
-    choice_id = Choice.object.get(id=choice_id)
+    for choice_id in submitted_answers:
+        choice_id = Choice.object.get(id=choice_id)
         submission.choices.add(choice_obj)
-submission.save()
+    submission.save()
 
-return HttpResponseRedirect(reverse(viewname="onlinecourse:show_exam_result", args=(course_id, submission_id)))
+    return HttpResponseRedirect(reverse(viewname="onlinecourse:show_exam_result", args=(course_id, submission_id)))
 
 def show_exam_result(request, course_id, submission_id):
     courseobj = Course.object.get(id=course_id)
