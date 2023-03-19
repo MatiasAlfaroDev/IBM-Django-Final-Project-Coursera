@@ -128,5 +128,29 @@ return HttpResponseRedirect(reverse(viewname="onlinecourse:show_exam_result", ar
 def show_exam_result(request, course_id, submission_id):
     courseobj = Course.object.get(id=course_id)
 
+    context = {}
+    context['course'] = courseobj
 
+    submission_choices = Submission.objects.get(id=submission_id).choices.all()
+    context['choices'] = submission_choices
+    print('submission choices:', submission_choices)
 
+    all_questions = Question.objects.filter(courses=course_id)
+    context['questions'] = all_questions
+    print('All Questions:', all_questions)
+
+    all_choices = [question.choice_set for question in all__questions]
+    print("All exam choices:", all_choices)
+
+    score = 0
+    max_score = 0
+
+    for question in all_questions:
+        max_score += question.marks
+        if question.answered.correctly(submission_choices):
+            score += question.marks
+
+    context['grades'] = round(score / max_score * 100)
+    print('Grade:', score)
+
+    return render(request,'onlinecourse/exam_result_bootstrap.html', context)
