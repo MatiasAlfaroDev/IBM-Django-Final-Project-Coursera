@@ -145,7 +145,7 @@ def show_exam_result(request, course_id, submission_id):
 
     for question in all_questions:
         max_score += question.marks
-        if question.answered.correctly(submission_choices):
+        if question.is_get_score(submission_choices):
             score += question.marks
 
     context['grades'] = round(score)
