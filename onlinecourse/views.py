@@ -105,26 +105,26 @@ def enroll(request, course_id):
 def submit(request, course_id):
     user = request.user
     course = get_object_or_404(Course, pk=course_id)
-    enrollment.objects.get(user=user, course=course)
+    enrollment = Enrollment.objects.get(user=user, course=course)
 
-    submission.objects.create(enrollment=enrollment)
+    submission = Submission.objects.create(enrollment=enrollment)
 
-    submitted_anwsers = []
+    submitted_answers = []
     for key in request.POST:
         if key.startswith('choice'):
             value = request.POST[key]
             choice_id = int(value)
-            submitted_anwsers.append(choice_id)
+            submitted_answers.append(choice_id)
 
     for choice_id in submitted_answers:
-        choice_id = Choice.object.get(id=choice_id)
+        choice_obj = Choice.objects.get(id=choice_id)
         submission.choices.add(choice_obj)
     submission.save()
 
-    return HttpResponseRedirect(reverse(viewname="onlinecourse:show_exam_result", args=(course_id, submission_id)))
+    return HttpResponseRedirect(reverse(viewname="onlinecourse:show_exam_result", args=(course_id, submission.id)))
 
 def show_exam_result(request, course_id, submission_id):
-    courseobj = Course.object.get(id=course_id)
+    courseobj = Course.objects.get(id=course_id)
 
     context = {}
     context['course'] = courseobj

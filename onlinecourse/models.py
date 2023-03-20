@@ -117,8 +117,7 @@ class Choice(models.Model):
 # Submission model
 class Submission(models.Model):
     enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
-    chocies = models.ManyToManyField(Choice)
-
+    choices = models.ManyToManyField(Choice)
     date_submitted  = models.DateField(default=now, editable=False)  
     time = models.TimeField(default=now, editable=False)
 
