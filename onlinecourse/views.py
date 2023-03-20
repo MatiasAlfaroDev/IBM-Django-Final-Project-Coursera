@@ -137,7 +137,7 @@ def show_exam_result(request, course_id, submission_id):
     context['questions'] = all_questions
     print('All Questions:', all_questions)
 
-    all_choices = [question.choice_set for question in all__questions]
+    all_choices = [question.choice_set for question in all_questions]
     print("All exam choices:", all_choices)
 
     score = 0
@@ -148,7 +148,7 @@ def show_exam_result(request, course_id, submission_id):
         if question.answered.correctly(submission_choices):
             score += question.marks
 
-    context['grades'] = round(score / max_score * 100)
+    context['grades'] = round(score)
     print('Grade:', score)
 
     return render(request,'onlinecourse/exam_result_bootstrap.html', context)

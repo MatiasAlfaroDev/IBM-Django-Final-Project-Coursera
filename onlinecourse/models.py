@@ -98,7 +98,8 @@ class Enrollment(models.Model):
 # Question Model
 class Question(models.Model):
     question_text = models.CharField(null=False, max_length=200)
-    questions = models.ForeignKey(Course, on_delete=models.CASCADE)
+    courses = models.ManyToManyField(Course)
+    marks = models.FloatField(default=1.0)
 
     def is_get_score(self, selected_ids):
         all_answers = self.choice_set.filter(is_correct=True).count()
